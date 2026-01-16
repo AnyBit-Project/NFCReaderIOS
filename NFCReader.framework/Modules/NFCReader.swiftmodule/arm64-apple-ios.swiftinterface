@@ -45,51 +45,6 @@ public struct NFCConfig {
   public init(startScanning: Swift.String? = nil, duplicate: Swift.String? = nil, notSupported: Swift.String? = nil, passwordCount: Swift.String? = nil, passwordBanned: Swift.String? = nil, lowVersion: Swift.String? = nil, loading: Swift.String? = nil, success: Swift.String? = nil, empty: Swift.String? = nil, same: Swift.String? = nil, exceed: Swift.String? = nil, failure: Swift.String? = nil)
   #endif
 }
-public typealias Callback = (Swift.String) -> Swift.Void
-public protocol NFCReaderProtocol {
-  #if compiler(>=5.3) && $NonescapableTypes
-  func getCardInfo(config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func writePassword(password: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func verifyPassword(password: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func changePassword(oldPassword: Swift.String, newPassword: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func readSeed(password: Swift.String, isOnlyRead: Swift.Bool, seed: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func writeSeed(password: Swift.String, seed: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func initCard(version: Swift.String, password: Swift.String, initStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  func updateMessage(message: Swift.String, needInvalidate: Swift.Bool)
-  #if compiler(>=5.3) && $NonescapableTypes
-  func transferBTC(password: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  func signBTC(command: Swift.String, password: Swift.String, callback: @escaping NFCReader.Callback)
-  #if compiler(>=5.3) && $NonescapableTypes
-  func transferTRX(version: Swift.String, password: Swift.String, hashStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func transferEVM(version: Swift.String, password: Swift.String, hashStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func read2FA(password: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  func continuouslyFetch2FACode(message: Swift.String, command: Swift.String, isDone: Swift.Bool, callback: @escaping NFCReader.Callback)
-  #if compiler(>=5.3) && $NonescapableTypes
-  func write2FA(password: Swift.String, hashStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  func delete2FA(password: Swift.String, hashStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
-  #endif
-}
 public struct NFCMethod {
 }
 @objc @_inheritsConvenienceInitializers public class NFCAnyBitReader : ObjectiveC.NSObject, NFCReader.NFCReaderProtocol {
@@ -138,6 +93,56 @@ public struct NFCMethod {
   @objc override dynamic public init()
   @objc deinit
 }
+extension NFCReader.NFCAnyBitReader : CoreNFC.NFCTagReaderSessionDelegate {
+  public func tagReaderSession(_ session: CoreNFC.NFCTagReaderSession, didDetect tags: [CoreNFC.NFCTag])
+  public func tagReaderSessionDidBecomeActive(_ session: CoreNFC.NFCTagReaderSession)
+  public func tagReaderSession(_ session: CoreNFC.NFCTagReaderSession, didInvalidateWithError error: any Swift.Error)
+}
+public typealias Callback = (Swift.String) -> Swift.Void
+public protocol NFCReaderProtocol {
+  #if compiler(>=5.3) && $NonescapableTypes
+  func getCardInfo(config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func writePassword(password: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func verifyPassword(password: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func changePassword(oldPassword: Swift.String, newPassword: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func readSeed(password: Swift.String, isOnlyRead: Swift.Bool, seed: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func writeSeed(password: Swift.String, seed: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func initCard(version: Swift.String, password: Swift.String, initStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  func updateMessage(message: Swift.String, needInvalidate: Swift.Bool)
+  #if compiler(>=5.3) && $NonescapableTypes
+  func transferBTC(password: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  func signBTC(command: Swift.String, password: Swift.String, callback: @escaping NFCReader.Callback)
+  #if compiler(>=5.3) && $NonescapableTypes
+  func transferTRX(version: Swift.String, password: Swift.String, hashStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func transferEVM(version: Swift.String, password: Swift.String, hashStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func read2FA(password: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  func continuouslyFetch2FACode(message: Swift.String, command: Swift.String, isDone: Swift.Bool, callback: @escaping NFCReader.Callback)
+  #if compiler(>=5.3) && $NonescapableTypes
+  func write2FA(password: Swift.String, hashStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func delete2FA(password: Swift.String, hashStr: Swift.String, config: NFCReader.NFCConfig?, callback: @escaping NFCReader.Callback)
+  #endif
+}
 public enum NFCStatus : Swift.String {
   case duplicate
   case notSupported
@@ -153,11 +158,6 @@ public enum NFCStatus : Swift.String {
   public var rawValue: Swift.String {
     get
   }
-}
-extension NFCReader.NFCAnyBitReader : CoreNFC.NFCTagReaderSessionDelegate {
-  public func tagReaderSession(_ session: CoreNFC.NFCTagReaderSession, didDetect tags: [CoreNFC.NFCTag])
-  public func tagReaderSessionDidBecomeActive(_ session: CoreNFC.NFCTagReaderSession)
-  public func tagReaderSession(_ session: CoreNFC.NFCTagReaderSession, didInvalidateWithError error: any Swift.Error)
 }
 extension NFCReader.NFCStatus : Swift.Equatable {}
 extension NFCReader.NFCStatus : Swift.Hashable {}
